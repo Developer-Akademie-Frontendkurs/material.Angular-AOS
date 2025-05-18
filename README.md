@@ -1,59 +1,147 @@
 # AOSAngular19
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.12.
+Dieses Projekt demonstriert die Nutzung von [AOS (Animate On Scroll)](https://michalsnik.github.io/aos/) innerhalb einer Angular-19-Anwendung. Ziel ist es, **Scroll-basierte Animationen** zu integrieren, um Inhalte beim Scrollen ansprechend erscheinen zu lassen.
 
-## Development server
+## 🔧 Setup & Installation
 
-To start a local development server, run:
+### Voraussetzungen
+
+- Node.js
+- Angular CLI (`npm install -g @angular/cli`)
+
+### Projekt installieren und starten
 
 ```bash
+git clone <REPO_URL>
+cd AOS-Angular-19
+npm install
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Projekt öffnen unter:  
+👉 `http://localhost:4200/`
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🎯 Ziel des Projekts
 
-```bash
-ng generate component component-name
-```
+Die App demonstriert die Einbindung von AOS, um eine moderne One-Page-Scroll-Seite mit Animationen zu erstellen. Die Startseite (`MainPage`) enthält drei wiederverwendete **Section-Komponenten**, die jeweils 100% der Viewport-Höhe einnehmen. Innerhalb jeder Section wird ein halbhoher Kasten (`50vh`) beim Erreichen eingeblendet (per Scroll-Animation).
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Es gibt zwei Seiten via Routing:
 
-```bash
-ng generate --help
-```
+- `/` → **MainPage** (mit 3 animierten Sektionen)
+- `/imprint` → **Impressum**
 
-## Building
+---
 
-To build the project run:
+## 📦 AOS Installation
 
 ```bash
-ng build
+npm install aos --save
+npm install --save-dev @types/aos
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### angular.json Konfiguration:
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
+```json
+"styles": [
+  "node_modules/aos/dist/aos.css",
+  "src/styles.scss"
+],
+"scripts": [
+  "node_modules/aos/dist/aos.js"
+]
 ```
 
-## Running end-to-end tests
+### AOS in main.ts initialisieren:
 
-For end-to-end (e2e) testing, run:
+```ts
+import * as AOS from 'aos';
 
-```bash
-ng e2e
+AOS.init();
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Falls benötigt, z. B. bei Lazy-Loading oder dynamischem Content:
 
-## Additional Resources
+```ts
+import { AfterViewInit } from '@angular/core';
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+ngAfterViewInit(): void {
+  AOS.refresh();
+}
+```
+
+---
+
+## 📁 Projektstruktur
+
+```txt
+src/
+├── app/
+│   ├── components/
+│   │   └── section/
+│   │       ├── section.component.ts
+│   │       ├── section.component.html
+│   │       └── section.component.scss
+│   ├── pages/
+│   │   ├── mainpage/
+│   │   │   ├── mainpage.component.ts
+│   │   │   ├── mainpage.component.html
+│   │   │   └── mainpage.component.scss
+│   │   └── imprint/
+│   └── app-routing.module.ts
+```
+
+Die **Section-Komponente** wird dreimal in der MainPage verwendet und zeigt beim Scrollen animierte Inhalte an.
+
+---
+
+## 📸 AOS Beispiel in HTML
+
+```html
+<div class="section">
+  <div class="content" data-aos="fade-up">
+    <h2>Section Title</h2>
+    <p>Text, der beim Scrollen erscheint.</p>
+  </div>
+</div>
+```
+
+### Beispiel-Styles (SCSS):
+
+```scss
+.section {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  height: 50vh;
+  width: 80%;
+  background-color: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+```
+
+---
+
+## ✅ Zusammenfassung
+
+Dieses Projekt zeigt, wie man AOS in einer Angular-Anwendung nutzt:
+
+- Modularer Aufbau mit Angular-Komponenten
+- Animierte Inhalte per Scroll
+- Reusability der Komponenten
+- Klar getrenntes Routing mit `MainPage` und `Impressum`
+
+---
+
+## 📚 Weitere Infos
+
+- [AOS Dokumentation](https://michalsnik.github.io/aos/)
+- [Angular CLI Guide](https://angular.dev/tools/cli)
